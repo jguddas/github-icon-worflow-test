@@ -29,7 +29,7 @@ jobs:
             tr '\n' ' ' | # remove line breaks
             sed -e 's/<svg[^>]*>/<svg>/g' | # remove attributes from svg element
             base64 -w 0 | # encode svg
-            sed "s|.*|<img width=\"50%\" alt=\"$file\" src=\"https://lucide-btt1rfnxj-lucide.vercel.app//api/gh-icon/&.svg\"/>|"
+            sed "s|.*|<img width=\"50%\" alt=\"$file\" src=\"https://lucide-czdrhku4b-lucide.vercel.app/api/gh-icon/&.svg\"/>|"
           done | tr '\n' ' ' >> $GITHUB_OUTPUT
           echo >> $GITHUB_OUTPUT
           echo "$delimiter" >> $GITHUB_OUTPUT
