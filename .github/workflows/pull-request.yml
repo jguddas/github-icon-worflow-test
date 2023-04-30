@@ -27,7 +27,6 @@ jobs:
         run: |
           delimiter="$(openssl rand -hex 8)"
           echo "body<<$delimiter" >> $GITHUB_OUTPUT
-          echo "- `strokeWidth={1}`"
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             cat "$file" | # get file content
             tr '\n' ' ' | # remove line breaks
@@ -42,7 +41,6 @@ jobs:
         run: |
           delimiter="$(openssl rand -hex 8)"
           echo "body<<$delimiter" >> $GITHUB_OUTPUT
-          echo "- `strokeWidth={2}`"
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             cat "$file" | # get file content
             tr '\n' ' ' | # remove line breaks
@@ -57,7 +55,6 @@ jobs:
         run: |
           delimiter="$(openssl rand -hex 8)"
           echo "body<<$delimiter" >> $GITHUB_OUTPUT
-          echo "- `strokeWidth={3}`"
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             cat "$file" | # get file content
             tr '\n' ' ' | # remove line breaks
