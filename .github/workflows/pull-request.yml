@@ -33,7 +33,7 @@ jobs:
             tr '\n' ' ' | # remove line breaks
             sed -e 's/<svg[^>]*>/<svg>/g' | # remove attributes from svg element
             base64 -w 0 | # encode svg
-            sed "s|.*|![\"$file\"](\"https://lucide-site-1xopntu6o-jguddas.vercel.app/api/gh-icon/stroke-width/1/&.svg\") |"
+            sed "s|.*|![$file](https://lucide-site-1xopntu6o-jguddas.vercel.app/api/gh-icon/stroke-width/1/&.svg) |"
           done | tr '\n' ' ' >> $GITHUB_OUTPUT
           echo >> $GITHUB_OUTPUT
           echo "$delimiter" >> $GITHUB_OUTPUT
@@ -48,7 +48,7 @@ jobs:
             tr '\n' ' ' | # remove line breaks
             sed -e 's/<svg[^>]*>/<svg>/g' | # remove attributes from svg element
             base64 -w 0 | # encode svg
-            sed "s|.*|![\"$file\"](\"https://lucide-site-1xopntu6o-jguddas.vercel.app/api/gh-icon/stroke-width/2/&.svg\") |"
+            sed "s|.*|![$file](https://lucide-site-1xopntu6o-jguddas.vercel.app/api/gh-icon/stroke-width/2/&.svg) |"
           done | tr '\n' ' ' >> $GITHUB_OUTPUT
           echo >> $GITHUB_OUTPUT
           echo "$delimiter" >> $GITHUB_OUTPUT
@@ -63,7 +63,7 @@ jobs:
             tr '\n' ' ' | # remove line breaks
             sed -e 's/<svg[^>]*>/<svg>/g' | # remove attributes from svg element
             base64 -w 0 | # encode svg
-            sed "s|.*|![\"$file\"](\"https://lucide-site-1xopntu6o-jguddas.vercel.app/api/gh-icon/stroke-width/3/&.svg\") |"
+            sed "s|.*|![$file](https://lucide-site-1xopntu6o-jguddas.vercel.app/api/gh-icon/stroke-width/3/&.svg) |"
           done | tr '\n' ' ' >> $GITHUB_OUTPUT
           echo >> $GITHUB_OUTPUT
           echo "$delimiter" >> $GITHUB_OUTPUT
