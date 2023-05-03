@@ -95,9 +95,9 @@ jobs:
             ${{ steps.generate-2px-stroke-width.outputs.body }}
             <details>
             <summary>Preview stroke widths</summary>
-            ${{ steps.generate-1px-stroke-width.outputs.body }}  
-            ${{ steps.generate-2px-stroke-width.outputs.body }}  
-            ${{ steps.generate-3px-stroke-width.outputs.body }}  
+            ${{ steps.generate-1px-stroke-width.outputs.body }}<br/>
+            ${{ steps.generate-2px-stroke-width.outputs.body }}<br/>
+            ${{ steps.generate-3px-stroke-width.outputs.body }}<br/>
             </details>
             <details>
             <summary>Icon X-rays</summary>
