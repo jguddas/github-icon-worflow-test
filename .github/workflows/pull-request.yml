@@ -22,12 +22,12 @@ jobs:
         uses: tj-actions/changed-files@v35
         with:
           files: icons/*.svg
-      - name: Generate cohesion check circles
-        id: generate-cohesion-check-circles
+      - name: Generate cohesion check random
+        id: generate-cohesion-check-random
         run: |
           delimiter="$(openssl rand -hex 8)"
           echo "body<<$delimiter" >> $GITHUB_OUTPUT
-          for file in $(printf "%s\\n" icons/*circle*.svg | shuf | head -n$(awk -F' ' '{print NF}' <<< '${{ steps.changed-files.outputs.all_changed_files }}')); do
+          for file in $(printf "%s\\n" icons/*.svg | shuf | head -n$(awk -F' ' '{print NF}' <<< '${{ steps.changed-files.outputs.all_changed_files }}')); do
             cat "$file" | # get file content
             tr '\n' ' ' | # remove line breaks
             sed -e 's/<svg[^>]*>/<svg>/g' | # remove attributes from svg element
@@ -123,9 +123,9 @@ jobs:
             ${{ steps.generate-2px-stroke-width.outputs.body }}
             <details>
             <summary>Preview cohesion</summary>
-            ${{ steps.generate-cohesion-check-circles.outputs.body }}<br/>
-            ${{ steps.generate-2px-stroke-width.outputs.body }}<br/>
             ${{ steps.generate-cohesion-check-squares.outputs.body }}<br/>
+            ${{ steps.generate-2px-stroke-width.outputs.body }}<br/>
+            ${{ steps.generate-cohesion-check-random.outputs.body }}<br/>
             </details>
             <details>
             <summary>Preview stroke widths</summary>
