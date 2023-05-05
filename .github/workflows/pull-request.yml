@@ -103,11 +103,7 @@ jobs:
           body: |
             ### Added or changed icons
             ${{ steps.generate-2px-stroke-width.outputs.body }}
-            <details>
-            <summary>Preview cohesiveness across icons</summary>
-            ${{ steps.generate-mixed-icons.outputs.body }}
-            </details>
-            <details>
+            ${{ steps.changed-files.outputs.all_changed_files.length }}
             <summary>Preview stroke widths</summary>
             ${{ steps.generate-1px-stroke-width.outputs.body }}<br/>
             ${{ steps.generate-2px-stroke-width.outputs.body }}<br/>
