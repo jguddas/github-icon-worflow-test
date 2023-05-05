@@ -28,11 +28,7 @@ jobs:
           delimiter="$(openssl rand -hex 8)"
           echo "body<<$delimiter" >> $GITHUB_OUTPUT
           for file in ${{ steps.changed-files.outputs.all_changed_files }} $(printf "%s\\n" icons/*.svg | shuf | head -n12); do
-            cat "$file" | # get file content
-            tr '\n' ' ' | # remove line breaks
-            sed -e 's/<svg[^>]*>/<svg>/g' | # remove attributes from svg element
-            base64 -w 0 | # encode svg
-            sed "s|.*|<img title=\"$file\" alt=\"$file\" src=\"https://raw.githubusercontent.com//${{ github.event.pull_request.head.repo.full_name }}/${{ github.event.pull_request.head.ref }}/$file\"/> |"
+            echo "<img title=\"$file\" alt=\"$file\" src=\"https://raw.githubusercontent.com/${{ github.event.pull_request.head.repo.full_name }}/${{ github.event.pull_request.head.ref }}/$file\"/> "
           done | shuf | tr '\n' ' ' >> $GITHUB_OUTPUT
           echo >> $GITHUB_OUTPUT
           echo "$delimiter" >> $GITHUB_OUTPUT
@@ -108,7 +104,7 @@ jobs:
             ### Added or changed icons
             ${{ steps.generate-2px-stroke-width.outputs.body }}
             <details>
-            <summary>Preview in context</summary>
+            <summary>Compare with other icons</summary>
             ${{ steps.generate-mixed-icons.outputs.body }}
             </details>
             <details>
