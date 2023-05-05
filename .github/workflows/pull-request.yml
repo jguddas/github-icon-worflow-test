@@ -22,14 +22,32 @@ jobs:
         uses: tj-actions/changed-files@v35
         with:
           files: icons/*.svg
-      - name: Generate mix of icons
-        id: generate-mixed-icons
+      - name: Generate cohesion check circles
+        id: generate-cohesion-check-circles
         run: |
           delimiter="$(openssl rand -hex 8)"
           echo "body<<$delimiter" >> $GITHUB_OUTPUT
-          for file in ${{ steps.changed-files.outputs.all_changed_files }} $(printf "%s\\n" icons/*.svg | shuf | head -n22); do
-            echo "<img title=\"$file\" alt=\"$file\" src=\"https://raw.githubusercontent.com/${{ github.event.pull_request.head.repo.full_name }}/${{ github.event.pull_request.head.ref }}/$file\"/> "
-          done | shuf | tr '\n' ' ' >> $GITHUB_OUTPUT
+          for file in printf "%s\\n" icons/*circle*.svg | head -n$(awk -F" " '{print NF}' <<< ${{ steps.changed-files.outputs.all_changed_files }}); do
+            cat "$file" | # get file content
+            tr '\n' ' ' | # remove line breaks
+            sed -e 's/<svg[^>]*>/<svg>/g' | # remove attributes from svg element
+            base64 -w 0 | # encode svg
+            sed "s|.*|<img title=\"$file\" alt=\"$file\" src=\"https://lucide-site-1xopntu6o-jguddas.vercel.app/api/gh-icon/stroke-width/2/&.svg\"/> |"
+          done | tr '\n' ' ' >> $GITHUB_OUTPUT
+          echo >> $GITHUB_OUTPUT
+          echo "$delimiter" >> $GITHUB_OUTPUT
+      - name: Generate cohesion check squares
+        id: generate-cohesion-check-squares
+        run: |
+          delimiter="$(openssl rand -hex 8)"
+          echo "body<<$delimiter" >> $GITHUB_OUTPUT
+          for file in printf "%s\\n" icons/*square*.svg | head -n$(awk -F" " '{print NF}' <<< ${{ steps.changed-files.outputs.all_changed_files }}); do
+            cat "$file" | # get file content
+            tr '\n' ' ' | # remove line breaks
+            sed -e 's/<svg[^>]*>/<svg>/g' | # remove attributes from svg element
+            base64 -w 0 | # encode svg
+            sed "s|.*|<img title=\"$file\" alt=\"$file\" src=\"https://lucide-site-1xopntu6o-jguddas.vercel.app/api/gh-icon/stroke-width/2/&.svg\"/> |"
+          done | tr '\n' ' ' >> $GITHUB_OUTPUT
           echo >> $GITHUB_OUTPUT
           echo "$delimiter" >> $GITHUB_OUTPUT
       - name: Generate 1px stroke-width
@@ -103,6 +121,13 @@ jobs:
           body: |
             ### Added or changed icons
             ${{ steps.generate-2px-stroke-width.outputs.body }}
+            <details>
+            <summary>Preview cohesion</summary>
+            ${{ steps.generate-cohesion-check-circles.outputs.body }}<br/>
+            ${{ steps.generate-2px-stroke-width.outputs.body }}<br/>
+            ${{ steps.generate-cohesion-check-squares.outputs.body }}<br/>
+            </details>
+            <details>
             <summary>Preview stroke widths</summary>
             ${{ steps.generate-1px-stroke-width.outputs.body }}<br/>
             ${{ steps.generate-2px-stroke-width.outputs.body }}<br/>
