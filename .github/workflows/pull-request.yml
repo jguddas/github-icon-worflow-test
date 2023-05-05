@@ -27,7 +27,7 @@ jobs:
         run: |
           delimiter="$(openssl rand -hex 8)"
           echo "body<<$delimiter" >> $GITHUB_OUTPUT
-          for file in ${{ steps.changed-files.outputs.all_changed_files }} $(printf "%s\\n" icons/*.svg | shuf | head -n12); do
+          for file in ${{ steps.changed-files.outputs.all_changed_files }} $(printf "%s\\n" icons/*.svg | shuf | head -n22); do
             echo "<img title=\"$file\" alt=\"$file\" src=\"https://raw.githubusercontent.com/${{ github.event.pull_request.head.repo.full_name }}/${{ github.event.pull_request.head.ref }}/$file\"/> "
           done | shuf | tr '\n' ' ' >> $GITHUB_OUTPUT
           echo >> $GITHUB_OUTPUT
