@@ -104,7 +104,7 @@ jobs:
             ### Added or changed icons
             ${{ steps.generate-2px-stroke-width.outputs.body }}
             <details>
-            <summary>Compare with other icons</summary>
+            <summary>Preview cohesiveness across icons</summary>
             ${{ steps.generate-mixed-icons.outputs.body }}
             </details>
             <details>
