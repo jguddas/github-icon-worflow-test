@@ -109,7 +109,7 @@ jobs:
             ${{ steps.generate-2px-stroke-width.outputs.body }}
             <details>
             <summary>Preview in context</summary>
-            ${{ steps.generate-mixed-icons }}
+            ${{ steps.generate-mixed-icons.outputs.body }}
             </details>
             <details>
             <summary>Preview stroke widths</summary>
