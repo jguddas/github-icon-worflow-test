@@ -22,6 +22,20 @@ jobs:
         uses: tj-actions/changed-files@v35
         with:
           files: icons/*.svg
+      - name: Generate 18px dpi preview
+        id: generate-18px-dpi-preview
+        run: |
+          delimiter="$(openssl rand -hex 8)"
+          echo "body<<$delimiter" >> $GITHUB_OUTPUT
+          for file in $(printf "%s\\n" icons/*.svg | shuf | head -n$(awk -F' ' '{print NF}' <<< '${{ steps.changed-files.outputs.all_changed_files }}')); do
+            cat "$file" | # get file content
+            tr '\n' ' ' | # remove line breaks
+            sed -e 's/<svg[^>]*>/<svg>/g' | # remove attributes from svg element
+            base64 -w 0 | # encode svg
+            sed "s|.*|<img title=\"$file\" alt=\"$file\" src=\"https://lucide-e7zgm8iix-lucide.vercel.app/api/gh-icon/dpi/18/&.svg\"/> |"
+          done | tr '\n' ' ' >> $GITHUB_OUTPUT
+          echo >> $GITHUB_OUTPUT
+          echo "$delimiter" >> $GITHUB_OUTPUT
       - name: Generate cohesion check random
         id: generate-cohesion-check-random
         run: |
@@ -32,7 +46,7 @@ jobs:
             tr '\n' ' ' | # remove line breaks
             sed -e 's/<svg[^>]*>/<svg>/g' | # remove attributes from svg element
             base64 -w 0 | # encode svg
-            sed "s|.*|<img title=\"$file\" alt=\"$file\" src=\"https://lucide-site-1xopntu6o-jguddas.vercel.app/api/gh-icon/stroke-width/2/&.svg\"/> |"
+            sed "s|.*|<img title=\"$file\" alt=\"$file\" src=\"https://lucide-e7zgm8iix-lucide.vercel.app/api/gh-icon/stroke-width/2/&.svg\"/> |"
           done | tr '\n' ' ' >> $GITHUB_OUTPUT
           echo >> $GITHUB_OUTPUT
           echo "$delimiter" >> $GITHUB_OUTPUT
@@ -46,7 +60,7 @@ jobs:
             tr '\n' ' ' | # remove line breaks
             sed -e 's/<svg[^>]*>/<svg>/g' | # remove attributes from svg element
             base64 -w 0 | # encode svg
-            sed "s|.*|<img title=\"$file\" alt=\"$file\" src=\"https://lucide-site-1xopntu6o-jguddas.vercel.app/api/gh-icon/stroke-width/2/&.svg\"/> |"
+            sed "s|.*|<img title=\"$file\" alt=\"$file\" src=\"https://lucide-e7zgm8iix-lucide.vercel.app/api/gh-icon/stroke-width/2/&.svg\"/> |"
           done | tr '\n' ' ' >> $GITHUB_OUTPUT
           echo >> $GITHUB_OUTPUT
           echo "$delimiter" >> $GITHUB_OUTPUT
@@ -60,7 +74,7 @@ jobs:
             tr '\n' ' ' | # remove line breaks
             sed -e 's/<svg[^>]*>/<svg>/g' | # remove attributes from svg element
             base64 -w 0 | # encode svg
-            sed "s|.*|<img title=\"$file\" alt=\"$file\" src=\"https://lucide-site-1xopntu6o-jguddas.vercel.app/api/gh-icon/stroke-width/1/&.svg\"/> |"
+            sed "s|.*|<img title=\"$file\" alt=\"$file\" src=\"https://lucide-e7zgm8iix-lucide.vercel.app/api/gh-icon/stroke-width/1/&.svg\"/> |"
           done | tr '\n' ' ' >> $GITHUB_OUTPUT
           echo >> $GITHUB_OUTPUT
           echo "$delimiter" >> $GITHUB_OUTPUT
@@ -74,7 +88,7 @@ jobs:
             tr '\n' ' ' | # remove line breaks
             sed -e 's/<svg[^>]*>/<svg>/g' | # remove attributes from svg element
             base64 -w 0 | # encode svg
-            sed "s|.*|<img title=\"$file\" alt=\"$file\" src=\"https://lucide-site-1xopntu6o-jguddas.vercel.app/api/gh-icon/stroke-width/2/&.svg\"/> |"
+            sed "s|.*|<img title=\"$file\" alt=\"$file\" src=\"https://lucide-e7zgm8iix-lucide.vercel.app/api/gh-icon/stroke-width/2/&.svg\"/> |"
           done | tr '\n' ' ' >> $GITHUB_OUTPUT
           echo >> $GITHUB_OUTPUT
           echo "$delimiter" >> $GITHUB_OUTPUT
@@ -88,7 +102,7 @@ jobs:
             tr '\n' ' ' | # remove line breaks
             sed -e 's/<svg[^>]*>/<svg>/g' | # remove attributes from svg element
             base64 -w 0 | # encode svg
-            sed "s|.*|<img title=\"$file\" alt=\"$file\" src=\"https://lucide-site-1xopntu6o-jguddas.vercel.app/api/gh-icon/stroke-width/3/&.svg\"/> |"
+            sed "s|.*|<img title=\"$file\" alt=\"$file\" src=\"https://lucide-e7zgm8iix-lucide.vercel.app/api/gh-icon/stroke-width/3/&.svg\"/> |"
           done | tr '\n' ' ' >> $GITHUB_OUTPUT
           echo >> $GITHUB_OUTPUT
           echo "$delimiter" >> $GITHUB_OUTPUT
@@ -102,7 +116,7 @@ jobs:
             tr '\n' ' ' | # remove line breaks
             sed -e 's/<svg[^>]*>/<svg>/g' | # remove attributes from svg element
             base64 -w 0 | # encode svg
-            sed "s|.*|<img width=\"400\" title=\"$file\" alt=\"$file\" src=\"https://lucide-site-1xopntu6o-jguddas.vercel.app/api/gh-icon/$(basename ${file//\.svg/})/&.svg\"/> |"
+            sed "s|.*|<img width=\"400\" title=\"$file\" alt=\"$file\" src=\"https://lucide-e7zgm8iix-lucide.vercel.app/api/gh-icon/$(basename ${file//\.svg/})/&.svg\"/> |"
           done | tr '\n' ' ' >> $GITHUB_OUTPUT
           echo >> $GITHUB_OUTPUT
           echo "$delimiter" >> $GITHUB_OUTPUT
@@ -120,7 +134,7 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             ### Added or changed icons
-            ${{ steps.generate-2px-stroke-width.outputs.body }}
+            ${{ steps.generate-2px-stroke-width.outputs.body }}<br/>
             <details>
             <summary>Preview cohesion</summary>
             ${{ steps.generate-cohesion-check-squares.outputs.body }}<br/>
@@ -132,6 +146,9 @@ jobs:
             ${{ steps.generate-1px-stroke-width.outputs.body }}<br/>
             ${{ steps.generate-2px-stroke-width.outputs.body }}<br/>
             ${{ steps.generate-3px-stroke-width.outputs.body }}<br/>
+            </details>
+            <summary>DPI Preview</summary>
+            ${{ steps.generate-18px-dpi-preview.outputs.body }}<br/>
             </details>
             <details>
             <summary>Icon X-rays</summary>
