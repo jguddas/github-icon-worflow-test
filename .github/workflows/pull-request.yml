@@ -167,7 +167,7 @@ jobs:
             </details>
             <details>
             <summary>Min DPI Preview (24px)</summary>
-            ${{ steps.generate-18px-dpi-preview.outputs.body }}<br/>
+            ${{ steps.generate-24px-dpi-preview.outputs.body }}<br/>
             </details>
             <details>
             <summary>Icon X-rays</summary>
