@@ -215,7 +215,7 @@ jobs:
             </details>
             <details>
             <summary>DPI Preview (24px)</summary>
-            ${{ needs.generate-changed-icons-comment-data.outputs.generate-24px-dpi-preview }
+            ${{ needs.generate-changed-icons-comment-data.outputs.generate-24px-dpi-preview }}
             </details>
             <details>
             <summary>Icon X-rays</summary>
